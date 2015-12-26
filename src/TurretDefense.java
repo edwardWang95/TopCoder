@@ -94,7 +94,7 @@ class Main{
 public class TurretDefense {
  private int i_XCoordinate;
  private int i_YCoordinate;
- private int i_StageTime;
+ private int i_StageTime=1;
  private int i_AbsoluteDifference;
 
  /**
@@ -108,17 +108,42 @@ public class TurretDefense {
   * @return i_DefenseResult
   */
  public int firstMiss(int[] x, int[] y, int[] time){
-  for(int i=0;i<time.length;i++){
-   setI_StageTime(time[i]);
-   i_AbsoluteDifference += getAbsoluteDifference(x[i],y[i]);
-   if(i_AbsoluteDifference > i_StageTime){
-    return i;
+  if(isArrayRulesFollowed(x,y,time)){
+   for(int i=0;i<time.length;i++){
+    if(isXAndYCoordinateRulesFollowed(x[i],y[i]) && isTimeRulesFollowed(i_StageTime,time[i])){
+     setI_StageTime(time[i]);
+     i_AbsoluteDifference += getAbsoluteDifference(x[i],y[i]);
+     if(i_AbsoluteDifference > i_StageTime){
+      return i;
+     }
+     setNewCoordinates(x[i], y[i]);
+     printCoordinatesAndDifference(i,i_AbsoluteDifference);
+    }
    }
-   setNewCoordinates(x[i], y[i]);
-   printCoordinatesAndDifference(i,i_AbsoluteDifference);
   }
   return -1;
  }
+ private boolean isArrayRulesFollowed(int[] x, int[] y, int[] time){
+  if(x.length>=2 && x.length<=50){
+   if(y.length==x.length && time.length==x.length){
+    return true;
+   }
+  }
+  return false;
+ }
+ private boolean isXAndYCoordinateRulesFollowed(int x, int y){
+  if(x>=0 && x<=1000 && y>=0 && y<=1000) return true;
+  return false;
+ }
+ private boolean isTimeRulesFollowed(int timeBefore, int timeCurrent){
+  if(timeCurrent>=1 && timeCurrent<=1000000){
+   if(timeBefore < timeCurrent){
+    return true;
+   }
+  }
+  return false;
+ }
+
  private void setI_StageTime(int i_StageTime){
   this.i_StageTime = i_StageTime;
  }
