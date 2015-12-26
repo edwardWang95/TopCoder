@@ -62,9 +62,9 @@
  Returns: 15
  Same as before, but now you only have 1 second to switch to the final target.
  3)
- {1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0}
- {1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0}
- {2000,4000,6000,8000,10000,12000,14000,16000,18000,20000, 22000,24000,26000,28000,30000,32000,34000,36000,38000,40000, 42000,44000,46000,48000,50000,52000,54000,56000,58000,60000, 62000,64000,66000,68000,70000,72000,74000,76000,78000,80000, 82000,84000,86000,88000,90000,92000,94000,96000,98000,100000}
+ {1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0};
+ {1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0};
+ {2000,4000,6000,8000,10000,12000,14000,16000,18000,20000, 22000,24000,26000,28000,30000,32000,34000,36000,38000,40000, 42000,44000,46000,48000,50000,52000,54000,56000,58000,60000, 62000,64000,66000,68000,70000,72000,74000,76000,78000,80000, 82000,84000,86000,88000,90000,92000,94000,96000,98000,100000};
  Returns: -1
  Takes a while, but you hit them all.
  4)
@@ -78,5 +78,78 @@
  {100,200,300,400,405}
  Returns: 4
  */
-public class TurretDefense {
+class Main{
+ public static void main(String[]args){
+  int[] ia_XCoordinate = {1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0};
+  int[] ia_YCoordinate = {1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0, 1000,0,1000,0,1000,0,1000,0,1000,0};
+  int[] ia_Time = {2000,4000,6000,8000,10000,12000,14000,16000,18000,20000, 22000,24000,26000,28000,30000,32000,34000,36000,38000,40000, 42000,44000,46000,48000,50000,52000,54000,56000,58000,60000, 62000,64000,66000,68000,70000,72000,74000,76000,78000,80000, 82000,84000,86000,88000,90000,92000,94000,96000,98000,100000};
+  /**
+   * To call non static methods, create instances of the object.
+   */
+  TurretDefense td_TurretDefense = new TurretDefense();
+  System.out.println("Result: "+ td_TurretDefense.firstMiss(ia_XCoordinate, ia_YCoordinate,ia_Time));
+ }
 }
+
+public class TurretDefense {
+ private int i_XCoordinate;
+ private int i_YCoordinate;
+ private int i_StageTime;
+ private int i_AbsoluteDifference;
+
+ /**
+  * 1]Check the absolute difference between old position and new position
+  * 2]Compare the difference to the time
+  * --if(difference>time){ return most recent time where object is shot down}
+  * --else{return -1 because all obejcts are shot down}
+  * @param x
+  * @param y
+  * @param time
+  * @return i_DefenseResult
+  */
+ public int firstMiss(int[] x, int[] y, int[] time){
+  for(int i=0;i<time.length;i++){
+   setI_StageTime(time[i]);
+   i_AbsoluteDifference += getAbsoluteDifference(x[i],y[i]);
+   if(i_AbsoluteDifference > i_StageTime){
+    return i;
+   }
+   setNewCoordinates(x[i], y[i]);
+   printCoordinatesAndDifference(i,i_AbsoluteDifference);
+  }
+  return -1;
+ }
+ private void setI_StageTime(int i_StageTime){
+  this.i_StageTime = i_StageTime;
+ }
+ private void setNewCoordinates(int i_XCoordinate, int i_YCoordinate){
+  this.i_XCoordinate = i_XCoordinate;
+  this.i_YCoordinate = i_YCoordinate;
+ }
+
+ private int getAbsoluteDifference(int x, int y){
+  return (Math.abs(x-i_XCoordinate)) + (Math.abs(y-i_YCoordinate));
+ }
+
+ private void printCoordinatesAndDifference(int stage, int i_AbsoluteDifference){
+  System.out.println(stage+"]X="+i_XCoordinate);
+  System.out.println(stage+"]Y="+i_YCoordinate);
+  System.out.println(stage+"]Stage="+i_StageTime);
+  System.out.println("Difference: "+i_AbsoluteDifference);
+ }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
