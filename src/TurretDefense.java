@@ -101,7 +101,7 @@ public class TurretDefense {
   * 1]Check the absolute difference between old position and new position
   * 2]Compare the difference to the time
   * --if(difference>time){ return most recent time where object is shot down}
-  * --else{return -1 because all obejcts are shot down}
+  * --else{return -1 because all objects are shot down}
   * @param x
   * @param y
   * @param time
